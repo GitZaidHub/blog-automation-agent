@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Concierge Agent — Pro UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette: Modern Obsidian & Indigo */
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #eef2ff;
+
+            --bg-body: #f8fafc;
+            --bg-panel: #ffffff;
+
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+
+            --input-bg: #ffffff;
+
+            --radius-xl: 20px;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-float: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            /* Subtle mesh gradient background */
+            background-image: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 0) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0) 0, transparent 50%);
+            background-size: 100% 100%;
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        /* HEADER */
+        header {
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), #818cf8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        header h1 {
+            font-size: 32px;
+            /* Much Larger Title */
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.03em;
+            color: #1e293b;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 16px;
+            margin-left: 64px;
+            /* Align with text */
+        }
+
+        /* GRID LAYOUT */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            /* Wider sidebar */
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* CARDS & PANELS */
+        .panel {
+            background: var(--bg-panel);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-card);
+            padding: 32px;
+            /* More padding inside cards */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* LEFT SIDEBAR */
+        .sidebar {
+            position: sticky;
+            top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 10px;
+            letter-spacing: 0.02em;
+        }
+
+        label svg {
+            color: var(--text-muted);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* INPUTS - The "Tiles" */
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 16px 18px;
+            /* Bigger padding */
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border);
+            /* Thicker border */
+            background: var(--input-bg);
+            font-size: 15px;
+            color: var(--text-main);
+            font-family: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        input:hover,
+        textarea:hover {
+            border-color: var(--border-hover);
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 24px;
+            /* Larger hit area */
+            border-radius: var(--radius-lg);
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            background: #94a3b8;
+        }
+
+        .btn.secondary {
+            background: white;
+            color: var(--text-main);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn.secondary:hover {
+            background: var(--bg-body);
+            border-color: #cbd5e1;
+        }
+
+        .btn.small {
+            width: auto;
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+            box-shadow: none;
+            border-width: 1px;
+        }
+
+        /* STATUS & LOGS */
+        .status-area {
+            background: #1e293b;
+            /* Dark theme for logs */
+            border-radius: var(--radius-lg);
+            padding: 0;
+            overflow: hidden;
+            margin-top: 24px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-header {
+            background: #0f172a;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+            border-bottom: 1px solid #334155;
+        }
+
+        .progress-track {
+            height: 4px;
+            background: #334155;
+            width: 100%;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #6366f1;
+            width: 0;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px #6366f1;
+        }
+
+        .logs {
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #e2e8f0;
+            height: 160px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar for logs */
+        .logs::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .logs::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+
+        /* CONTENT AREA */
+        .tabs-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tabs {
+            background: #e2e8f0;
+            padding: 5px;
+            border-radius: 12px;
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .viewer {
+            min-height: 600px;
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 64px;
+            /* Document-like padding */
+            box-shadow: var(--shadow-float);
+            /* Floating effect */
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .viewer-toolbar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+        }
+
+        .viewer:hover .viewer-toolbar {
+            opacity: 1;
+        }
+
+        .markdown {
+            color: #1e293b;
+            font-size: 17px;
+            line-height: 1.8;
+            max-width: 75ch;
+            /* Optimal reading width */
+            margin: 0 auto;
+        }
+
+        .markdown h1 {
+            font-size: 2.5em;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.8em;
+        }
+
+        .markdown h2 {
+            margin-top: 1.8em;
+            font-size: 1.75em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3em;
+        }
+
+        .markdown p {
+            margin-bottom: 1.5em;
+        }
+
+        .markdown code {
+            background: var(--bg-body);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            color: #db2777;
+        }
+
+        .markdown pre {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .markdown pre code {
+            color: inherit;
+            padding: 0;
+            background: transparent;
+        }
+
+        /* SPINNER */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-left-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 1024px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+
+            .viewer {
+                padding: 32px;
+            }
+
+            .app-container {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="brand-area">
+                <div class="brand-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5c0-5.523 4.477-10 10-10z" />
+                        <path d="M8.5 8.5v.01" />
+                        <path d="M16 16v.01" />
+                        <path d="M12 12v.01" />
+                        <path d="M8.5 16v.01" />
+                        <path d="M16 8.5v.01" />
+                    </svg>
+                </div>
+                <h1>Concierge Agent</h1>
+            </div>
+            <p>Automated editorial pipeline — Create, Refine, and Distribute content with AI.</p>
+        </header>
+
+        <div class="grid-layout">
+
+            <div class="panel sidebar">
+                <form id="blogForm">
+
+                    <div style="margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border);">
+                        <h2 style="font-size:18px; font-weight:700; margin:0">Project Setup</h2>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                            Blog Title
+                        </label>
+                        <input id="title" name="title" placeholder="e.g. The Future of AI Agents in 2025" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="audience">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            Target Audience
+                        </label>
+                        <input id="audience" name="audience" placeholder="e.g. CTOs, Senior Developers" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brief">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                            Context / Brief
+                        </label>
+                        <textarea id="brief" name="brief"
+                            placeholder="Enter your research, outline, or raw notes here..." required></textarea>
+                    </div>
+
+                    <button class="btn" id="generateBtn">
+                        <span>Start Generation</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                    </button>
+
+                    <div class="status-area" id="statusArea" style="display:none">
+                        <div class="status-header">
+                            <span id="statusText">SYSTEM READY</span>
+                            <span id="sessionBadge">ID: --</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="progressFill" class="progress-bar" style="width:0%"></div>
+                        </div>
+                        <div class="logs" id="logsArea">Waiting for initialization...</div>
+                    </div>
+                </form>
+
+                <div style="margin-top:auto;">
+                    <button type="button" class="btn secondary small" id="downloadSessionBtn" style="width:100%">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download Debug JSON
+                    </button>
+                </div>
+            </div>
+
+            <div style="min-width:0">
+
+                <div class="tabs-container">
+                    <div class="tabs" role="tablist">
+                        <button class="tab active" data-tab="draft">Draft</button>
+                        <button class="tab" data-tab="edited">Edited</button>
+                        <button class="tab" data-tab="published">Published</button>
+                    </div>
+                    <div style="font-size:13px; font-weight:500; color:var(--text-light)" id="lastUpdated">Last active:
+                        Just now</div>
+                </div>
+
+                <div class="viewer" id="viewer">
+
+                    <div class="viewer-toolbar">
+                        <button class="btn secondary small" id="copyBtn" title="Copy Text">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                        </button>
+                        <button class="btn secondary small" id="downloadBtn" title="Download Markdown">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                        </button>
+                        <button class="btn secondary small" id="showRawBtn" title="View Source">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div style="border-bottom:1px solid var(--border); margin-bottom:32px; padding-bottom:16px;">
+                        <div id="viewerMeta"
+                            style="font-size:12px; font-weight:700; color:var(--primary); letter-spacing:0.05em; text-transform:uppercase;">
+                            WAITING FOR INPUT</div>
+                    </div>
+
+                    <div id="markdownContent" class="markdown">
+                        <div style="text-align:center; padding:60px 0; color:var(--text-light)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                stroke-linejoin="round" style="margin-bottom:16px; opacity:0.5">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+                                <polyline points="13 2 13 9 20 9" />
+                            </svg>
+                            <p>Generated content will appear here.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // UI logic adapted from original implementation
+        const form = document.getElementById('blogForm');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadSessionBtn = document.getElementById('downloadSessionBtn');
+        const statusArea = document.getElementById('statusArea');
+        const statusText = document.getElementById('statusText');
+        const progressFill = document.getElementById('progressFill');
+        const logsArea = document.getElementById('logsArea');
+
+        const sessionBadge = document.getElementById('sessionBadge');
+        const tabs = Array.from(document.querySelectorAll('.tab'));
+        const viewerMeta = document.getElementById('viewerMeta');
+        const markdownContent = document.getElementById('markdownContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const showRawBtn = document.getElementById('showRawBtn');
+        const lastUpdated = document.getElementById('lastUpdated');
+
+        let currentSessionId = null;
+        let pollInterval = null;
+        let currentView = 'draft';
+        let sessionData = {}; // store last fetched session data
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            startWorkflow();
+        });
+
+        async function startWorkflow() {
+            // reset UI
+            statusArea.style.display = 'block';
+            statusText.textContent = 'INITIALIZING WORKFLOW';
+            progressFill.style.width = '5%';
+            logsArea.textContent = '> System initialized...';
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<span class="spinner"></span> <span>Processing...</span>';
+
+            const payload = {
+                title: document.getElementById('title').value,
+                audience: document.getElementById('audience').value,
+                brief: document.getElementById('brief').value
+            };
+
+            try {
+                const res = await fetch('/create_post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!res.ok) throw new Error('Failed to start workflow');
+                const data = await res.json();
+                currentSessionId = data.session_id;
+                sessionBadge.textContent = 'ID: ' + currentSessionId.slice(0, 6);
+                sessionData = {};
+                startPolling();
+            } catch (err) {
+                statusText.textContent = 'ERROR';
+                logsArea.textContent = (err.stack || err.message);
+                finishReset();
+            }
+        }
+
+        function startPolling() {
+            if (pollInterval) clearInterval(pollInterval);
+            pollInterval = setInterval(fetchStatus, 1800);
+            fetchStatus();
+        }
+
+        async function fetchStatus() {
+            if (!currentSessionId) return;
+            try {
+                const res = await fetch(`/status/${currentSessionId}`);
+                if (!res.ok) throw new Error('Failed to fetch status');
+                const data = await res.json();
+                // store
+                sessionData = data.data || {};
+                updateStatusUI(data);
+
+                if (['completed', 'failed', 'cancelled'].includes(data.state)) {
+                    clearInterval(pollInterval);
+                    finishWorkflow(data);
+                }
+            } catch (err) {
+                console.error(err);
+                logsArea.textContent += '\n> Polling error: ' + err.message;
+            }
+        }
+
+        function updateStatusUI(data) {
+            statusText.textContent = `STATUS: ${data.state ? data.state.toUpperCase() : 'UNKNOWN'}`;
+            // progress heuristic
+            const mapping = { created: 5, running: 50, review: 70, completed: 100 };
+            const val = mapping[data.state] || Math.min(95, (parseFloat(progressFill.style.width) || 5) + 8);
+            progressFill.style.width = val + '%';
+
+            // logs
+            if (data.data && data.data.logs) {
+                // Format timestamps clearly
+                const fmtLogs = data.data.logs.map(l => {
+                    const time = new Date(l.timestamp * 1000).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    return `<span style="opacity:0.6">[${time}]</span> <span style="color:#60a5fa">${l.source}</span>: ${l.message}`;
+                }).join('<br>');
+                logsArea.innerHTML = fmtLogs;
+                logsArea.scrollTop = logsArea.scrollHeight;
+            }
+
+            // update last updated
+            lastUpdated.textContent = 'Last active: ' + new Date().toLocaleTimeString();
+
+            // if content present, enable tabs
+            enableTabsIfContent();
+        }
+
+        function finishWorkflow(data) {
+            finishReset();
+            progressFill.style.width = '100%';
+            if (data.state === 'completed') {
+                statusText.textContent = 'COMPLETED';
+                // render default view
+                renderView(currentView);
+            } else {
+                statusText.textContent = `WORKFLOW ${data.state.toUpperCase()}`;
+            }
+        }
+
+        function finishReset() {
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = '<span>Start Generation</span> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+        }
+
+        // Tabs
+        tabs.forEach(t => t.addEventListener('click', () => {
+            tabs.forEach(x => x.classList.remove('active'));
+            t.classList.add('active');
+            currentView = t.dataset.tab;
+            renderView(currentView);
+        }));
+
+        function enableTabsIfContent() {
+            // if sessionData contains draft/edited/published enable corresponding tabs (just visual cue here)
+            tabs.forEach(t => {
+                const k = t.dataset.tab;
+                if (sessionData[k]) t.disabled = false, t.classList.remove('disabled');
+                else t.disabled = true, t.classList.add('disabled');
+            });
+        }
+
+        function renderView(view) {
+            const content = (sessionData[view] && sessionData[view].content) || sessionData[view] || '';
+            const updatedAt = (sessionData[view] && sessionData[view].updated_at) ? new Date(sessionData[view].updated_at * 1000).toLocaleString() : '—';
+            viewerMeta.textContent = content ? `${view.toUpperCase()} VERSION` : `WAITING FOR CONTENT`;
+            if (content) {
+                markdownContent.innerHTML = marked.parse(content);
+            } else {
+                markdownContent.innerHTML = '<div style="text-align:center; padding:60px 0; color:var(--text-light)"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px; opacity:0.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg><p>No content yet for this stage.</p></div>';
+            }
+        }
+
+        copyBtn.addEventListener('click', () => {
+            const text = markdownContent.innerText || '';
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const original = copyBtn.innerHTML;
+                copyBtn.innerHTML = 'OK';
+                setTimeout(() => copyBtn.innerHTML = original, 1200);
+            });
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const view = currentView;
+            const raw = (sessionData[view] && sessionData[view].content) || sessionData[view] || '';
+            if (!raw) return alert('No content to download for ' + view);
+            const blob = new Blob([raw], { type: 'text/markdown' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${(document.getElementById('title').value || 'post')}_${view}.md`;
+            document.body.appendChild(a); a.click(); a.remove();
+        });
+
+        showRawBtn.addEventListener('click', () => {
+            const view = currentView;
+            const raw = (sessionData[view] && sessionData[view].content) || sessionData[view] || '';
+            if (!raw) return alert('No content');
+            const w = window.open('', '_blank');
+            w.document.write('<pre style="white-space:pre-wrap;font-family:monospace;padding:20px;background:#f8fafc;color:#334155">' + escapeHtml(raw) + '</pre>');
+            w.document.title = `Raw ${view}`;
+        });
+
+        downloadSessionBtn.addEventListener('click', () => {
+            if (!currentSessionId) return alert('No session yet');
+            const blob = new Blob([JSON.stringify(sessionData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `session_${currentSessionId}.json`;
+            document.body.appendChild(a); a.click(); a.remove();
+        });
+
+        function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+.env
+.env.*
+data
+.vscode
+.git
+.gitignore
+venv
+.venv
+scripts
+outputs
+*.log

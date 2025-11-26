@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+httpx
+aiohttp
+pydantic
+sqlalchemy
+aiosqlite
+numpy
+scikit-learn
+python-dotenv
+prometheus-client
+textstat
+tenacity
+pytest
+pytest-asyncio
+tqdm
+duckduckgo-search

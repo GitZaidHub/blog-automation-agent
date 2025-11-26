@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+      - "8001:8001" # prometheus metrics port
+    volumes:
+      - ./src:/app/src # mount source for live dev
+      - ./data:/app/data # persist sqlite
+    env_file:
+      - .env # load API keys and sensitive settings
+    environment:
+      - LLM_MODE=prod # enables real LLM mode
+      - METRICS_PORT=8001
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/ || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  data:
