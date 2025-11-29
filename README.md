@@ -17,7 +17,9 @@ A multi-agent system that autonomously researches, drafts, edits, optimizes, and
 
 ## 🛠️ Setup & Installation
 
-## ARCHITECTURE DIAGRAM
+### Architecture Diagram
+
+```mermaid
 graph TD
     User[User] -->|POST /create_post| API[FastAPI Entry Point]
     API --> Orchestrator
@@ -48,7 +50,7 @@ graph TD
     
     Orchestrator -->|Log/Metrics| Observability
     Observability -->|Expose| Prometheus[Prometheus Metrics]
-
+```
 
 ### Prerequisites
 
@@ -59,7 +61,7 @@ graph TD
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/GitZaidHub/blog-automation-agent.git
     cd Concierge
     ```
 
