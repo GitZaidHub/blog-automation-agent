@@ -17,6 +17,39 @@ A multi-agent system that autonomously researches, drafts, edits, optimizes, and
 
 ## 🛠️ Setup & Installation
 
+## ARCHITECTURE DIAGRAM
+graph TD
+    User[User] -->|POST /create_post| API[FastAPI Entry Point]
+    API --> Orchestrator
+    
+    subgraph "Orchestrator Workflow"
+        Orchestrator -->|1. Research| ResearchAgent
+        ResearchAgent -->|Use| WebSearchTool
+        ResearchAgent -->|Return Citations| Orchestrator
+        
+        Orchestrator -->|2. Draft| DraftAgent
+        DraftAgent -->|Generate| DraftContent
+        DraftAgent -->|Return Draft| Orchestrator
+        
+        Orchestrator -->|3. Edit| EditorAgent
+        EditorAgent -->|Refine| EditedContent
+        EditorAgent -->|Return Edited| Orchestrator
+        
+        Orchestrator -->|4. SEO| SEOAgent
+        SEOAgent -->|Analyze| SEOReport
+        SEOAgent -->|Return Report| Orchestrator
+        
+        Orchestrator -->|5. Publish| PublisherAgent
+        PublisherAgent -->|Publish| BlogPlatform
+    end
+    
+    Orchestrator -->|Persist State| SessionService
+    SessionService -->|Read/Write| SQLite[(SQLite DB)]
+    
+    Orchestrator -->|Log/Metrics| Observability
+    Observability -->|Expose| Prometheus[Prometheus Metrics]
+
+
 ### Prerequisites
 
 *   Python 3.11+
