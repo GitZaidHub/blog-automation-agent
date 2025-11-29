@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Automated Blog Concierge
 
 A multi-agent system that autonomously researches, drafts, edits, optimizes, and publishes blog posts. Built with FastAPI, Python, and Google Gemini (or Demo Mode).
@@ -92,7 +91,3 @@ python -m pytest
 ## 📊 Monitoring
 
 Prometheus metrics are available at `http://localhost:8001`.
-=======
-# blog-automation-agent
-A modular multi-agent workflow for automated blog generation with research, drafting, editing, SEO optimization, evaluation, and publishing stages. Built with FastAPI and LLM integration.
->>>>>>> 68f4e1650706ffcff0ea2eaab12872d7462c0358
